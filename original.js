@@ -14,19 +14,21 @@ var pos = 11;//現在調べている位置
 board[11] = 1;//スタート地点は調べ中
 
 var direcboard = function(){//進める方向を調べる
-    var retarray=[];//進める方向を日本語で収納する(順序は上下左右)。
-    for(var i=0;i<4;i++){
-            if(board[pos+direc[i]] == 0){
-                retarray.push(direcstr[i]);
-            }
-        
-    }
-    if(back){
-        return retarray;
-    }else{
-        routedir.push(retarray);
-        move(retarray);//向きを知ったら動かす。
+        if(pos != 88){
+        var retarray=[];//進める方向を日本語で収納する(順序は上下左右)。
+        for(var i=0;i<4;i++){
+                if(board[pos+direc[i]] == 0){
+                    retarray.push(direcstr[i]);
+                }
+            
+        }
+        if(back){
+            return retarray;
+        }else{
+            routedir.push(retarray);
+            move(retarray);//向きを知ったら動かす。
 
+        }
     }
 }
 
@@ -125,13 +127,14 @@ function backtrack(){//バックトラック関数
           }
     back=false;
 }
+var timer;  
 
 function start(){//開始プログラム
-                    console.time('timer1');
                     resetBoard('s');//盤面をリセット
-                    setInterval(function(){
-                        direcboard();//計測
-                        },1);  
+                   
+                    var timer = setInterval(
+                        "direcboard()"
+                         ,1);  
                 }
 
 function insertArray(pos,direction){//進んだ向きをマスに記入する
@@ -141,20 +144,23 @@ function insertArray(pos,direction){//進んだ向きをマスに記入する
 function resetBoard(b){//盤面をリセット
     for(var i=0;i<board.length;i++){
         if(i<11 || i>88 || i%10==0 || i%10==9){
-            board[i] = 3;//外枠
+            board[i] = 4;//外枠
         }else{
             board[i] = 0;
             document.getElementById(b+i).innerHTML='';
         }
         
        }
-       pos =11;//スタート位置合わせ
-       mutate++;
-       board[11] = 1;
-       nowroute = [];//ルートも初期化
-       routedir = []; 
-       back = false;
-    　 idtoBoard(b);
+       if(b == 's'){
+            pos =11;//スタート位置合わせ
+            mutate++;
+            board[11] = 1;
+            board[34] = 3;
+            nowroute = [];//ルートも初期化
+            routedir = []; 
+            back = false;
+        　  idtoBoard(b);
+        }
 }
 
 function idtoBoard(b){//board情報をhtmlに反映。
@@ -169,17 +175,19 @@ function idtoBoard(b){//board情報をhtmlに反映。
                 break;
             case 2://確定
                 document.getElementById(b+i).className = "square firm";
-            }         
+                break;    
+            case 3://壁
+                document.getElementById(b+i).className = "square wall";
+            }
         }
     }
 }
 
 function firmRoute(){//導出した道のりが一番長いか検証
-    if(nowroute.length>bestroute.length){
         for(var i=0;i<nowroute.length;i++){
             var copya = true;//盤の内容を↓に反映するかどうか
             board[nowroute[i]] = 2;
-            bestroute[i] = nowroute[i];   
+            bestroute[i] = nowroute[i]; 
             idtoBoard('a');      
         }
     if(copya == true){//下盤に反映させる
@@ -201,16 +209,8 @@ function firmRoute(){//導出した道のりが一番長いか検証
         }
         copya = false;//反映済
     }
-        resetBoard('s');
+       
         document.getElementById('percent').innerHTML='合致％:'+(bestroute.length/63);//合致度を表示
         document.getElementById('mutate').innerHTML='試行回数:'+(mutate)+'回';//合致度を表示
-        if((bestroute.length/63)>0.80){
-            console.timeEnd('timer1');
-			console,log(mutate);
-            console.time('timer1');
-        }
-    }else{
-        resetBoard('s');
-    }
-
+    console.log('a');
 }

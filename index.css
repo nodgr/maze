@@ -12,12 +12,15 @@
 .none{
 	background-color:white;
 }
-.none,.kouho,.firm{
+.square{
 	width:30px;
     height:30px;
     text-align:center;
     vertical-align:middle;
     font-size:30px;
+}
+.wall{
+	background-color: black;
 }
 .firm{
     background-color: chartreuse;
