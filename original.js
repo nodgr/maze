@@ -8,10 +8,17 @@ var routedir = new Array();//今迄進んだマスの全ての選択肢を収納
 
 var mutate=0;
 
+var moving = false;//捜索中かどうか
+
 var back=false;//バックトラック中か
 
+window.onload = function(){
+resetBoard('s');
+}
 var pos = 21;//現在調べている位置
 board[21] = 1;//スタート地点は調べ中
+
+
 
 var direcboard = function(){//進める方向を調べる
         if(pos != 178){
@@ -130,8 +137,7 @@ function backtrack(){//バックトラック関数
 var timer;  
 
 function start(){//開始プログラム
-                    resetBoard('s');//盤面をリセット
-                   
+                   moving = true;
                     var timer = setInterval(
                         "direcboard()"
                          ,1);  
@@ -155,7 +161,6 @@ function resetBoard(b){//盤面をリセット
             pos =21;//スタート位置合わせ
             mutate++;
             board[21] = 1;
-            board[34] = 3;
             nowroute = [];//ルートも初期化
             routedir = []; 
             back = false;
@@ -183,34 +188,18 @@ function idtoBoard(b){//board情報をhtmlに反映。
     }
 }
 
-function firmRoute(){//導出した道のりが一番長いか検証
-        for(var i=0;i<nowroute.length;i++){
-            var copya = true;//盤の内容を↓に反映するかどうか
-            board[nowroute[i]] = 2;
-            bestroute[i] = nowroute[i]; 
-            idtoBoard('a');      
-        }
-    if(copya == true){//下盤に反映させる
-        resetBoard('a');
-        for(var i=0;i<bestroute.length;i++){
-                document.getElementById('a'+bestroute[i]).className='square firm';
-                if(i<bestroute.length-1){
-                    var shiki = bestroute[i+1]-bestroute[i]//移動前後のマスIDから移動方向を推定(下盤)
-                    if( shiki ==1){
-                        document.getElementById('a'+bestroute[i]).innerHTML='→';
-                    }else if(shiki==-1){
-                        document.getElementById('a'+bestroute[i]).innerHTML='←';
-                    }else if(shiki==20){
-                        document.getElementById('a'+bestroute[i]).innerHTML='↓';
-                    }else if(shiki==-20){
-                        document.getElementById('a'+bestroute[i]).innerHTML='↑';
-                    }
-                }              
-        }
-        copya = false;//反映済
+function addwall(k){//黒ぶぶんをTUIKA 
+    var temp = Number(k.id.slice(1));
+    console.log(board[temp])
+    if(board[temp] == 0){
+        board[temp] = 3;
+
+    }else{
+        board[temp] = 0;
     }
-       
-        document.getElementById('percent').innerHTML='合致％:'+(bestroute.length/63);//合致度を表示
-        document.getElementById('mutate').innerHTML='試行回数:'+(mutate)+'回';//合致度を表示
-    console.log('a');
+    idtoBoard('s');
+    console.log(temp);
+}
+function firmRoute(){//導出した道のりが一番長いか検証
+    
 }

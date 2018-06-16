@@ -10,7 +10,7 @@ html
       -for(var i=11;i<179;i++){
        - if(i>20 && i<179 && i%20 != 0 && i%20 != 19){
        -  var tid = 's'+i;
-          div(id=tid class="square none")
+          div(id=tid class="square none" onclick="addwall(this)")
        - }
       - }
     
