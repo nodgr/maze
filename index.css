@@ -6,7 +6,7 @@
 	align-content: space-between;
 	border:solid 4px;
 	background-color:black;
-	width:247px;
+	width:557px;
 	height:247px;
 }
 .none{
@@ -28,9 +28,9 @@
 .kouho{
     background-color: blueviolet;
 }
-#s11,#a11{
+#s21,#a11{
     background-color: blue;
 }
-#s88,#a88{
+#s178,#a88{
     background-color: brown;
 }

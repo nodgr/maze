@@ -1,5 +1,5 @@
-var board = new Array(100);//それぞれの盤面の情報を入れる配列。
-var direc = [-10,10,-1,1];//各マスでの進む方向を入れる(上,下,左,右).
+var board = new Array(200);//それぞれの盤面の情報を入れる配列。
+var direc = [-20,20,-1,1];//各マスでの進む方向を入れる(上,下,左,右).
 var direcstr = ['上','下','左','右'];//各マスにすすめるかどうか
 var nowroute = new Array();//現在進めているルートの道のりを収納。
 var bestroute = new Array();//今までの最適ルートの道のりを格納する。
@@ -10,11 +10,11 @@ var mutate=0;
 
 var back=false;//バックトラック中か
 
-var pos = 11;//現在調べている位置
-board[11] = 1;//スタート地点は調べ中
+var pos = 21;//現在調べている位置
+board[21] = 1;//スタート地点は調べ中
 
 var direcboard = function(){//進める方向を調べる
-        if(pos != 88){
+        if(pos != 178){
         var retarray=[];//進める方向を日本語で収納する(順序は上下左右)。
         for(var i=0;i<4;i++){
                 if(board[pos+direc[i]] == 0){
@@ -41,18 +41,18 @@ function move(retarray){//実際に動かす。
         switch (retarray[rand]){//実際にposを進める
         case '上':
             insertArray(pos,'↑');//盤上に矢印を加える
-            pos = pos -10;//現在位置を変更
+            pos = pos -20;//現在位置を変更
             board[pos] = 1;//盤を調査済にする
             idtoBoard('s');//盤情報を反映
-            if(pos == 88){firmRoute();}//ゴールしてたらルート判定する。
+            if(pos == 178){firmRoute();}//ゴールしてたらルート判定する。
             nowroute.push(pos);//ルート探索が終わらなければ経路を追加していく
              break;        
         case '下':
             insertArray(pos,'↓');
-            pos = pos +10;
+            pos = pos +20;
             board[pos] = 1;
             idtoBoard('s');
-            if(pos == 88){firmRoute();}
+            if(pos == 178){firmRoute();}
             nowroute.push(pos);
             break;
         case '左':
@@ -60,7 +60,7 @@ function move(retarray){//実際に動かす。
             pos = pos -1;
             board[pos] = 1;
             idtoBoard('s');
-            if(pos == 88){firmRoute();}
+            if(pos == 178){firmRoute();}
             nowroute.push(pos);
             break;
         case '右':
@@ -68,7 +68,7 @@ function move(retarray){//実際に動かす。
             pos = pos +1;
             board[pos] = 1;
             idtoBoard('s');
-            if(pos == 88){firmRoute();}
+            if(pos == 178){firmRoute();}
             nowroute.push(pos);
             break;
         }
@@ -91,7 +91,7 @@ function backtrack(){//バックトラック関数
         if((routedir.length)>0){
 
             switch(maeroute-pos){//直前のマスとの差を調べて行き詰まった移動方向を特定
-                case -10://上
+                case -20://上
                     for(var i=0;i<routedir[routedir.length-1].length;i++){
                         if(routedir[routedir.length-1][i] == '上'){
                         routedir[routedir.length-1].splice(i,1);
@@ -99,7 +99,7 @@ function backtrack(){//バックトラック関数
                         }
                     }
                     break;
-                case 10://下
+                case 20://下
                     for(var i=0;i<routedir[routedir.length-1].length;i++){
                         if(routedir[routedir.length-1][i] == '下'){
                             routedir[routedir.length-1].splice(i,1);
@@ -143,7 +143,7 @@ function insertArray(pos,direction){//進んだ向きをマスに記入する
 
 function resetBoard(b){//盤面をリセット
     for(var i=0;i<board.length;i++){
-        if(i<11 || i>88 || i%10==0 || i%10==9){
+        if(i<21 || i>178 || i%20==0 || i%20==19){
             board[i] = 4;//外枠
         }else{
             board[i] = 0;
@@ -152,9 +152,9 @@ function resetBoard(b){//盤面をリセット
         
        }
        if(b == 's'){
-            pos =11;//スタート位置合わせ
+            pos =21;//スタート位置合わせ
             mutate++;
-            board[11] = 1;
+            board[21] = 1;
             board[34] = 3;
             nowroute = [];//ルートも初期化
             routedir = []; 
@@ -165,7 +165,7 @@ function resetBoard(b){//盤面をリセット
 
 function idtoBoard(b){//board情報をhtmlに反映。
     for(var i=0;i<board.length;i++){
-        if(i>10&&i<89&&i%10!=0&&i%10!=9){
+        if(i>20&&i<179&&i%20!=0&&i%20!=19){
             switch (board[i]){
             case 0://何もない
                 document.getElementById(b+i).className = "square none";
@@ -200,9 +200,9 @@ function firmRoute(){//導出した道のりが一番長いか検証
                         document.getElementById('a'+bestroute[i]).innerHTML='→';
                     }else if(shiki==-1){
                         document.getElementById('a'+bestroute[i]).innerHTML='←';
-                    }else if(shiki==10){
+                    }else if(shiki==20){
                         document.getElementById('a'+bestroute[i]).innerHTML='↓';
-                    }else if(shiki==-10){
+                    }else if(shiki==-20){
                         document.getElementById('a'+bestroute[i]).innerHTML='↑';
                     }
                 }              
