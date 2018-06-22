@@ -1,4 +1,4 @@
-var board = new Array(200);//それぞれの盤面の情報を入れる配列。
+var board = new Array(400);//それぞれの盤面の情報を入れる配列。
 var direc = [-20,20,-1,1];//各マスでの進む方向を入れる(上,下,左,右).
 var direcstr = ['上','下','左','右'];//各マスにすすめるかどうか
 var nowroute = new Array();//現在進めているルートの道のりを収納。
@@ -21,7 +21,7 @@ board[21] = 1;//スタート地点は調べ中
 
 
 var direcboard = function(){//進める方向を調べる
-        if(pos != 178){
+        if(pos != 378){
         var retarray=[];//進める方向を日本語で収納する(順序は上下左右)。
         for(var i=0;i<4;i++){
                 if(board[pos+direc[i]] == 0){
@@ -51,7 +51,7 @@ function move(retarray){//実際に動かす。
             pos = pos -20;//現在位置を変更
             board[pos] = 1;//盤を調査済にする
             idtoBoard('s');//盤情報を反映
-            if(pos == 178){firmRoute();}//ゴールしてたらルート判定する。
+            if(pos == 378){firmRoute();}//ゴールしてたらルート判定する。
             nowroute.push(pos);//ルート探索が終わらなければ経路を追加していく
              break;        
         case '下':
@@ -59,7 +59,7 @@ function move(retarray){//実際に動かす。
             pos = pos +20;
             board[pos] = 1;
             idtoBoard('s');
-            if(pos == 178){firmRoute();}
+            if(pos == 378){firmRoute();}
             nowroute.push(pos);
             break;
         case '左':
@@ -67,7 +67,7 @@ function move(retarray){//実際に動かす。
             pos = pos -1;
             board[pos] = 1;
             idtoBoard('s');
-            if(pos == 178){firmRoute();}
+            if(pos == 378){firmRoute();}
             nowroute.push(pos);
             break;
         case '右':
@@ -75,7 +75,7 @@ function move(retarray){//実際に動かす。
             pos = pos +1;
             board[pos] = 1;
             idtoBoard('s');
-            if(pos == 178){firmRoute();}
+            if(pos == 378){firmRoute();}
             nowroute.push(pos);
             break;
         }
@@ -149,7 +149,7 @@ function insertArray(pos,direction){//進んだ向きをマスに記入する
 
 function resetBoard(b){//盤面をリセット
     for(var i=0;i<board.length;i++){
-        if(i<21 || i>178 || i%20==0 || i%20==19){
+        if(i<21 || i>378 || i%20==0 || i%20==19){
             board[i] = 4;//外枠
         }else{
             board[i] = 0;
@@ -170,7 +170,7 @@ function resetBoard(b){//盤面をリセット
 
 function idtoBoard(b){//board情報をhtmlに反映。
     for(var i=0;i<board.length;i++){
-        if(i>20&&i<179&&i%20!=0&&i%20!=19){
+        if(i>20&&i<379&&i%20!=0&&i%20!=19){
             switch (board[i]){
             case 0://何もない
                 document.getElementById(b+i).className = "square none";
