@@ -10,3 +10,5 @@ gulp.task('pug', () => {
   }))
   .pipe(gulp.dest('./html/'));
 });
+
+gulp.task('default',['pug'])
